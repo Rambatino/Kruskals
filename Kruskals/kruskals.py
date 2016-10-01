@@ -16,6 +16,7 @@ class Kruskals(object):
     def __init__(self, ndarr, arr):
         self._ndarr = ndarr
         self._arr = arr
+        self._distance = None
 
     @staticmethod
     def from_pandas_df(df, i_variables, d_variable):
@@ -43,13 +44,15 @@ class Kruskals(object):
         Calculate the average distance between a point on the
         n-dimensional plane and the other points
         """
-        ind_c, pij, pijm = self.generate_diff(self._ndarr, self._arr)
-        pij_row_mean = pij[~np.isnan(pij)].reshape(ind_c, ind_c-1).mean(axis=1) * (ind_c - 1)
-        fact = factorial(ind_c - 1) / (2 * factorial(ind_c - 3))
-        pijm_row_sum = np.nan_to_num(pijm).sum(axis=0).sum(axis=1)
-        pijm_row_count = (np.nan_to_num(pijm) > 0).sum(axis=0).sum(axis=1)
-        pijm_row_mean = pijm_row_sum / pijm_row_count * fact
-        return (pij_row_mean + pijm_row_mean) / ((ind_c - 1) + fact)
+        if self._distance is None:
+            ind_c, pij, pijm = self.generate_diff(self._ndarr, self._arr)
+            pij_row_mean = pij[~np.isnan(pij)].reshape(ind_c, ind_c-1).mean(axis=1) * (ind_c - 1)
+            fact = factorial(ind_c - 1) / (2 * factorial(ind_c - 3))
+            pijm_row_sum = np.nan_to_num(pijm).sum(axis=0).sum(axis=1)
+            pijm_row_count = (np.nan_to_num(pijm) > 0).sum(axis=0).sum(axis=1)
+            pijm_row_mean = pijm_row_sum / pijm_row_count * fact
+            self._distance = (pij_row_mean + pijm_row_mean) / ((ind_c - 1) + fact)
+        return self._distance
 
     def generate_diff(self, ndarr, arr):
         """
@@ -79,5 +82,4 @@ class Kruskals(object):
         """
         Distance as a relative percentage
         """
-        distance = self.distance()
-        return distance / distance.sum() * 100
+        return self.distance() / self.distance().sum() * 100
