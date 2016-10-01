@@ -9,13 +9,11 @@ from .kruskals import Kruskals
 def main():
     """Entry point when module is run from command line"""
 
-    parser = argparse.ArgumentParser(description='Run the chaid algorithm on a'
-                                     ' csv file.')
+    parser = argparse.ArgumentParser(description='Run Kruskal\'s Algorithm')
     parser.add_argument('file')
     parser.add_argument('dependent_variable', nargs=1)
     parser.add_argument('independent_variables', nargs='+')
     nspace = parser.parse_args()
-
 
     if nspace.file[-4:] == '.csv':
         data = pd.read_csv(nspace.file)
@@ -29,7 +27,6 @@ def main():
 
     print(Kruskals.from_pandas_df(data, nspace.independent_variables,
                                 nspace.dependent_variable[0]).percentage())
-
 
 if __name__ == "__main__":
     main()
