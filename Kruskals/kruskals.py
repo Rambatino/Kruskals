@@ -70,7 +70,8 @@ class Kruskals(object):
                             pijm[m, i, j] = self.pcor_squared(np.array([ndarr[:,i], arr, ndarr[:,j], ndarr[:, m]]))
         return (l, pij, pijm)
 
-    def pcor_squared(self, ndarr):
+    @staticmethod
+    def pcor_squared(ndarr):
         """
         Internal method to calculate the partial correlation squared
         """
