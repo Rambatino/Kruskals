@@ -79,4 +79,5 @@ class Kruskals(object):
         """
         Distance as a relative percentage
         """
-        return self.distance() / self.distance().sum() * 100
+        distance = self.distance()
+        return distance / distance.sum() * 100
