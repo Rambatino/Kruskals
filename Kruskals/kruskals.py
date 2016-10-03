@@ -60,7 +60,7 @@ class Kruskals(object):
         l = ndarr.shape[1]
         pij = np.empty((l,l,)) * np.nan
         pijm = np.empty((l,l,l)) * np.nan
-        for i, j in chain(*[[(x, y), (y, x)] for x, y in combinations(range(l), 2)]):
+        for i, j in chain.from_iterable(((x, y), (y, x)) for x, y in combinations(range(l), 2)):
             pij[i, j] = self.pcor_squared(np.array([ndarr[:,i], arr, ndarr[:,j]]))
             for m in (x for x in range(j+1, l) if x != i):
                 pijm[m, i, j] = self.pcor_squared(np.array([ndarr[:,i], arr, ndarr[:,j], ndarr[:, m]]))
