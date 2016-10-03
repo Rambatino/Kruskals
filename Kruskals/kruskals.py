@@ -1,5 +1,6 @@
 import numpy as np
 from scipy.special import factorial
+from itertools import combinations, chain
 
 class Kruskals(object):
     """
@@ -59,13 +60,10 @@ class Kruskals(object):
         l = ndarr.shape[1]
         pij = np.empty((l,l,)) * np.nan
         pijm = np.empty((l,l,l)) * np.nan
-        for i in range(l):
-            for j in range(l):
-                if i != j:
-                    pij[i, j] = self.pcor_squared(np.array([ndarr[:,i], arr, ndarr[:,j]]))
-                    for m in range(l):
-                        if m != i and m != j and m > j:
-                            pijm[m, i, j] = self.pcor_squared(np.array([ndarr[:,i], arr, ndarr[:,j], ndarr[:, m]]))
+        for i, j in chain(*[[(x, y), (y, x)] for x, y in combinations(range(l), 2)]):
+            pij[i, j] = self.pcor_squared(np.array([ndarr[:,i], arr, ndarr[:,j]]))
+            for m in (x for x in range(j+1, l) if x != i):
+                pijm[m, i, j] = self.pcor_squared(np.array([ndarr[:,i], arr, ndarr[:,j], ndarr[:, m]]))
         return (l, pij, pijm)
 
     @staticmethod
