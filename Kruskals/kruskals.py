@@ -46,11 +46,9 @@ class Kruskals(object):
         """
         if self._distance is None:
             ind_c, pij, pijm = self.generate_diff(self._ndarr, self._arr)
-            pij_row_mean = pij[~np.isnan(pij)].reshape(ind_c, ind_c-1).mean(axis=1) * (ind_c - 1)
+            pij_row_mean = np.nanmean(pij, axis=1) * (ind_c - 1)
             fact = factorial(ind_c - 1) / (2 * factorial(ind_c - 3))
-            pijm_row_sum = np.nan_to_num(pijm).sum(axis=0).sum(axis=1)
-            pijm_row_count = (np.nan_to_num(pijm) > 0).sum(axis=0).sum(axis=1)
-            pijm_row_mean = pijm_row_sum / pijm_row_count * fact
+            pijm_row_mean = np.nanmean(pijm, axis=(0, 2)) * fact
             self._distance = (pij_row_mean + pijm_row_mean) / ((ind_c - 1) + fact)
         return self._distance
 
@@ -76,8 +74,7 @@ class Kruskals(object):
         Internal method to calculate the partial correlation squared
         """
         icvx = np.linalg.inv(np.cov(ndarr))
-        partial = (icvx[0, 1] * np.sqrt(1.0 / icvx[0, 0]) * np.sqrt(1.0 / icvx[1, 1]))
-        return partial**2
+        return (icvx[0, 1] * icvx[0, 1]) / (icvx[0, 0] * icvx[1, 1])
 
     def percentage(self):
         """
