@@ -1,6 +1,14 @@
 dependencies:
-  pre:
-    - pip install .
+  override:
+    - pip install tox tox-pyenv detox pytest-cov numpy pandas scipy codecov
+    - pyenv local 2.7.9 3.4.3 3.5.0
+  cache_directories:
+    - "/home/ubuntu/CHAID/.tox/py27"
+    - "/home/ubuntu/CHAID/.tox/py34"
+    - "/home/ubuntu/CHAID/.tox/py35"
+    - "bin"
 test:
   override:
-    - python -m py.test tests
+    - detox
+    - py.test --cov=./
+    - codecov --token=be8cd1f6-1560-4628-8a34-b557a119894b

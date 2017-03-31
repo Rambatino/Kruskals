@@ -38,7 +38,7 @@ def test_from_pandas_df():
     exp_distance = np.array([ 0.14721,  0.44398,  0.23979,  0.62493,  0.71898,  0.31662])
 
     df = pd.DataFrame(ndarr)
-    distance = np.round(Kruskals.Kruskals.from_pandas_df(df, range(6), 6).distance(), decimals=5)
+    distance = np.round(Kruskals.Kruskals.from_pandas_df(df, list(range(6)), 6).distance(), decimals=5)
 
     assert np.array_equal(distance, exp_distance)
 
