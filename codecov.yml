@@ -2,3 +2,4 @@ ignore:
   - "Kruskals/__init__.py"
   - "Kruskals/__main__.py"
   - "tests/"
+  - "setup.py"
