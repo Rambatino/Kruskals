@@ -4,7 +4,7 @@ from itertools import combinations, chain
 
 class Kruskals(object):
     """
-    Class to organise running Josef Kruskal's algorithm
+    Class to run Josef Kruskal's algorithm
     Parameters
         ----------
         ndarr : numpy.ndarray (dtype: float/int)
@@ -53,6 +53,12 @@ class Kruskals(object):
             self._distance = (pij_row_mean + pijm_row_mean) / ((ind_c - 1) + fact)
         return self._distance
 
+    def percentage(self):
+        """
+        Distance as a relative percentage
+        """
+        return self.distance() / self.distance().sum() * 100
+
     def generate_diff(self, ndarr, arr):
         """
         Internal method to calculate the difference between all points
@@ -73,9 +79,3 @@ class Kruskals(object):
         """
         icvx = np.linalg.inv(np.cov(ndarr))
         return (icvx[0, 1] * icvx[0, 1]) / (icvx[0, 0] * icvx[1, 1])
-
-    def percentage(self):
-        """
-        Distance as a relative percentage
-        """
-        return self.distance() / self.distance().sum() * 100
