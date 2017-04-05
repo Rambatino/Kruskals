@@ -31,7 +31,7 @@ from Kruskals import Kruskals
 pandas_data_frame = ...
 independent_variable_columns = ['a', 'b', 'c']
 dep_variable = 'd'
-Kruskals.from_pandas_df(df, independent_variable_columns, dep_variable).distance()
+Kruskals.from_pandas_df(df, independent_variable_columns, dep_variable).driver_score()
 ```
 
 Running from the Command Line
