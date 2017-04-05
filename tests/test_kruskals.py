@@ -20,7 +20,7 @@ def test_driver_score():
     arr = np.array([1, 2, 3, 4, 5, 6])
 
     exp_driver_score = np.array([ 0.14721,  0.44398,  0.23979,  0.62493,  0.71898,  0.31662])
-    driver_score = np.round(Kruskals(ndarr, arr).driver_score(), decimals=5)
+    driver_score = np.round(Kruskals.Kruskals(ndarr, arr).driver_score(), decimals=5)
 
     assert np.array_equal(driver_score, exp_driver_score)
 
@@ -38,7 +38,7 @@ def test_from_pandas_df():
     exp_driver_score = np.array([ 0.14721,  0.44398,  0.23979,  0.62493,  0.71898,  0.31662])
 
     df = pd.DataFrame(ndarr)
-    driver_score = np.round(Kruskals.from_pandas_df(df, list(range(6)), 6).driver_score(), decimals=5)
+    driver_score = np.round(Kruskals.Kruskals.from_pandas_df(df, list(range(6)), 6).driver_score(), decimals=5)
 
     assert np.array_equal(driver_score, exp_driver_score)
 
@@ -56,7 +56,7 @@ def test_percentage():
     arr = np.array([1, 2, 3, 4, 5, 6])
 
     exp_driver_score = np.array([  5.90856,  17.81959,   9.62429,  25.08222,  28.85722,  12.70813])
-    driver_score = np.round(Kruskals(ndarr, arr).percentage(), decimals=5)
+    driver_score = np.round(Kruskals.Kruskals(ndarr, arr).percentage(), decimals=5)
 
     assert np.array_equal(driver_score, exp_driver_score)
 
@@ -74,7 +74,7 @@ def test_series_output():
     arr = np.array([1, 2, 3, 4, 5, 6])
 
     exp_driver_score = np.array([ 0.14721,  0.44398,  0.23979,  0.62493,  0.71898,  0.31662])
-    series = Kruskals(ndarr, arr).driver_score_to_series()
+    series = Kruskals.Kruskals(ndarr, arr).driver_score_to_series()
 
     assert np.array_equal(np.round(series.values, decimals=5), exp_driver_score)
     assert series.name == 'score'
