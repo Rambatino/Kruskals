@@ -26,7 +26,7 @@ def main():
         print('Could not detect file type. Please select one from "csv" or "sav"')
 
     print(Kruskals.from_pandas_df(data, nspace.independent_variables,
-                                nspace.dependent_variable[0]).percentage())
+                                nspace.dependent_variable[0]).driver_score_to_series())
 
 if __name__ == "__main__":
     main()
