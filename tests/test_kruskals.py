@@ -79,3 +79,45 @@ def test_series_output():
     assert np.array_equal(np.round(series.values, decimals=5), exp_driver_score)
     assert series.name == 'score'
     assert series.index.name == 'driver'
+
+def test_ivars_sub_into_series():
+    """
+    Test that the column names are correctly mapped
+    to the index values of the series
+    """
+    ndarr = np.array([
+      [1, 2, 3, 4, 5, 6, 1],
+      [6, 5, 4, 3, 8, 1, 2],
+      [1, 1, 9, 1, 1, 1, 3],
+      [9, 2, 2, 2, 2, 2, 4],
+      [3, 3, 3, 9, 3, 3, 5],
+      [1, 2, 2, 9, 1, 4, 6]
+    ])
+
+
+    df = pd.DataFrame(ndarr)
+    df.columns = ['a', 'b', 'c', 'd', 'e', 'f', 'g']
+    ind_cols = ['a', 'b', 'c', 'd', 'e', 'f']
+
+    series = Kruskals.Kruskals.from_pandas_df(df, ind_cols, 'g').driver_score_to_series()
+
+    assert (series.index.values == ind_cols).all()
+
+def test_that_direction_is_applied_on_directional_drivers_analysis():
+    """ Test whether some driver scores are negative """
+    ndarr = np.array([
+      [10, 2, 3, 4, 5, 6],
+      [6, 5, 4, 3, 8, 1],
+      [1, 1, 9, 1, 1, 1],
+      [9, 2, 2, 2, 2, 2],
+      [3, 3, 3, 9, 3, 3],
+      [1, 2, 2, 9, 1, 4],
+      [1, 2, 2, 9, 1, 4],
+      [1, 2, 2, 9, 1, 4]
+    ])
+
+    arr = np.array([1, 2, 3, 4, 5, 6, 7, 8])
+
+    series = Kruskals.Kruskals(ndarr, arr).driver_score_to_series(True)
+
+    assert (series.values < 0).any()

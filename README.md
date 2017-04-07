@@ -28,10 +28,59 @@ Creating the Kruskal's Distance Measure
 
 from Kruskals import Kruskals
 
-pandas_data_frame = ...
-independent_variable_columns = ['a', 'b', 'c']
-dep_variable = 'd'
-Kruskals.from_pandas_df(df, independent_variable_columns, dep_variable).driver_score()
+# drivers score can be calculated straight from numpy:
+
+>>> import Kruskals
+>>> import numpy as np
+
+>>> ndarr = np.array([
+...     [1, 2, 3, 4, 5, 6],
+...     [6, 5, 4, 3, 8, 1],
+...     [1, 1, 9, 1, 1, 1],
+...     [9, 2, 2, 2, 2, 2],
+...     [3, 3, 3, 9, 3, 3],
+...     [1, 2, 2, 9, 1, 4]
+...   ])
+>>> arr = np.array([1, 2, 3, 4, 5, 6])
+
+>>> Kruskals.Kruskals(ndarr, arr).driver_score()
+array([ 0.14721238,  0.44397682,  0.23979013,  0.62492599,  0.71898045,
+        0.31662422])
+
+# or from a pandas dataframe:
+
+>>> import pandas as pd
+>>> df = pd.DataFrame(ndarr)
+>>> df.columns = ['a', 'b', 'c', 'd', 'e', 'f']
+>>> df
+   a  b  c  d  e  f
+0  1  2  3  4  5  6
+1  6  5  4  3  8  1
+2  1  1  9  1  1  1
+3  9  2  2  2  2  2
+4  3  3  3  9  3  3
+5  1  2  2  9  1  4
+>>> ind_cols = ['a', 'b', 'c', 'd', 'e']
+>>> Kruskals.Kruskals.from_pandas_df(df, ind_cols, 'f').driver_score_to_series()
+driver
+a    0.382246
+b    0.267348
+c    0.485063
+d    0.262053
+e    0.165562
+Name: score, dtype: float64
+
+# it also supports directional drivers (determined by the correlation coefficient between
+# each independent variable, and the dependent)
+
+>>> Kruskals.Kruskals.from_pandas_df(df, ind_cols, 'f').driver_score_to_series(directional=True)
+driver
+a   -0.382246
+b   -0.267348
+c   -0.485063
+d    0.262053
+e   -0.165562
+Name: score, dtype: float64
 ```
 
 Running from the Command Line
