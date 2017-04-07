@@ -45,17 +45,17 @@ class Kruskals(object):
         dep_values = df[d_var].values
         return Kruskals(ind_values, dep_values, i_vars)
 
-    def driver_score_to_series(self):
+    def driver_score_to_series(self, directional=False):
         """
         Returns the driver score for each variable in the independent set
         as a pandas series
         """
-        series = pd.Series(self.driver_score(), index=self._i_vars)
+        series = pd.Series(self.driver_score(directional), index=self._i_vars)
         series.name = 'score'
         series.index.name = 'driver'
         return series
 
-    def driver_score(self):
+    def driver_score(self, directional=False):
         """
         Calculate the driver score for all independent variables
         """
@@ -65,6 +65,8 @@ class Kruskals(object):
             fact = factorial(ind_c - 1) / (2 * factorial(ind_c - 3))
             pijm_row_mean = np.nanmean(pijm, axis=(0, 2)) * fact
             self._driver_score = (pij_row_mean + pijm_row_mean) / ((ind_c - 1) + fact)
+            if directional:
+                self._driver_score = self._driver_score * np.apply_along_axis(self.correlation_coef, 0, self._ndarr, self._arr)
         return self._driver_score
 
     def percentage(self):
@@ -100,3 +102,7 @@ class Kruskals(object):
         Internal method to calculate relative affect on the dependent variable
         """
         return self.driver_score() / self.driver_score().sum() * 100
+
+    @staticmethod
+    def correlation_coef(ind, dep):
+        return 1 if np.corrcoef(ind, dep)[0][1] >= 0 else -1
