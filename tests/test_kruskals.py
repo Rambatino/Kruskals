@@ -81,7 +81,10 @@ def test_series_output():
     assert series.index.name == 'driver'
 
 def test_ivars_sub_into_series():
-    """ Test percentage is calculated correctly """
+    """
+    Test that the column names are correctly mapped
+    to the index values of the series
+    """
     ndarr = np.array([
       [1, 2, 3, 4, 5, 6, 1],
       [6, 5, 4, 3, 8, 1, 2],
@@ -100,8 +103,8 @@ def test_ivars_sub_into_series():
 
     assert (series.index.values == ind_cols).all()
 
-def test_direction_on_directional_drivers_analysis():
-    """ Test percentage is calculated correctly """
+def test_that_direction_is_applied_on_directional_drivers_analysis():
+    """ Test whether some driver scores are negative """
     ndarr = np.array([
       [10, 2, 3, 4, 5, 6],
       [6, 5, 4, 3, 8, 1],
