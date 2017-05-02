@@ -60,13 +60,16 @@ class Kruskals(object):
         Calculate the driver score for all independent variables
         """
         if self._driver_score is None:
-            ind_c, pij, pijm = self.generate_diff(self._ndarr, self._arr)
+            new_arr, idx = self.no_corr(self._ndarr) # remove the i_vars that have 0 variance
+            ind_c, pij, pijm = self.generate_diff(new_arr, self._arr)
             pij_row_mean = np.nanmean(pij, axis=1) * (ind_c - 1)
             fact = factorial(ind_c - 1) / (2 * factorial(ind_c - 3))
             pijm_row_mean = np.nanmean(pijm, axis=(0, 2)) * fact
             self._driver_score = (pij_row_mean + pijm_row_mean) / ((ind_c - 1) + fact)
             if directional:
-                self._driver_score = self._driver_score * np.apply_along_axis(self.correlation_coef, 0, self._ndarr, self._arr)
+                self._driver_score = self._driver_score * np.apply_along_axis(self.correlation_coef, 0, new_arr, self._arr)
+            for i in idx:
+                self._driver_score = np.insert(self._driver_score, i, 0)
         return self._driver_score
 
     def percentage(self):
@@ -88,6 +91,13 @@ class Kruskals(object):
             for m in (x for x in range(j+1, l) if x != i):
                 pijm[m, i, j] = self.pcor_squared(np.array([ndarr[:,i], arr, ndarr[:,j], ndarr[:, m]]))
         return (l, pij, pijm)
+
+    @staticmethod
+    def no_corr(ndarr):
+        zero_var = lambda arr: len(np.unique(arr))
+        mask = np.apply_along_axis(zero_var, 0, ndarr)
+        idx_to_remove = np.where(mask == 1)[0]
+        return np.delete(ndarr, idx_to_remove, axis=1), idx_to_remove
 
     @staticmethod
     def pcor_squared(ndarr):

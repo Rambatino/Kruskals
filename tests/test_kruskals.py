@@ -121,3 +121,26 @@ def test_that_direction_is_applied_on_directional_drivers_analysis():
     series = Kruskals.Kruskals(ndarr, arr).driver_score_to_series(True)
 
     assert (series.values < 0).any()
+
+def test_ability_to_handle_all_same_type():
+    """
+    Test to make sure that kruskals can handle data
+    when all the values for and independent set are 0
+    """
+    ndarr = np.array([
+      [10, 0, 3, 4, 5, 6],
+      [6, 0, 4, 3, 5, 1],
+      [1, 0, 9, 1, 5, 1],
+      [9, 0, 2, 2, 5, 2],
+      [3, 0, 3, 9, 5, 3],
+      [1, 0, 2, 9, 5, 4],
+      [1, 0, 2, 9, 5, 4],
+      [1, 0, 2, 9, 5, 4]
+    ])
+
+    arr = np.array([1, 2, 3, 4, 5, 6, 7, 8])
+
+    series = Kruskals.Kruskals(ndarr, arr).driver_score()
+
+    assert series[1] == 0.0
+    assert series[4] == 0.0
