@@ -67,7 +67,7 @@ class Kruskals(object):
             self._driver_score = (pij_row_mean + pijm_row_mean) / ((ind_c - 1) + fact)
             if directional:
                 self._driver_score = self._driver_score * np.apply_along_axis(self.correlation_coef, 0, self._ndarr, self._arr)
-        return self._driver_score
+        return np.nan_to_num(self._driver_score)
 
     def percentage(self):
         """
