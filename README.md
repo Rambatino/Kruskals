@@ -6,6 +6,10 @@ Kruskal's Driver Analysis (Not to be confused with his Distance Measure algorith
 
 This package provides a python implementation of [Kruskal's Algorithm](https://en.wikipedia.org/wiki/Kruskal%27s_algorithm)
 
+Caveats
+------------
+
+Any independent set that has a variance of 0 will automatically have a driver score of 0
 
 Installation
 ------------
