@@ -6,6 +6,10 @@ Kruskal's Driver Analysis (Not to be confused with his Distance Measure algorith
 
 This package provides a python implementation of [Kruskal's Algorithm](https://en.wikipedia.org/wiki/Kruskal%27s_algorithm)
 
+Caveats
+------------
+
+To calculate the inverse it uses the (Moore–Penrose pseudoinverse)[https://en.wikipedia.org/wiki/Moore%E2%80%93Penrose_pseudoinverse] which permits highly correlated independent variables to be passed as well as variables that have zero variance. It is up to the user of this library to ensure they are comfortable with this. N.B. if the normal matrix inversion would work, that is used, the psuedoinverse is only applied if the former fails.
 
 Installation
 ------------

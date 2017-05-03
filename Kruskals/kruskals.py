@@ -67,7 +67,7 @@ class Kruskals(object):
             self._driver_score = (pij_row_mean + pijm_row_mean) / ((ind_c - 1) + fact)
             if directional:
                 self._driver_score = self._driver_score * np.apply_along_axis(self.correlation_coef, 0, self._ndarr, self._arr)
-        return self._driver_score
+        return np.nan_to_num(self._driver_score)
 
     def percentage(self):
         """
@@ -94,7 +94,7 @@ class Kruskals(object):
         """
         Internal method to calculate the partial correlation squared
         """
-        icvx = np.linalg.inv(np.cov(ndarr))
+        icvx = np.linalg.pinv(np.cov(ndarr))
         return (icvx[0, 1] * icvx[0, 1]) / (icvx[0, 0] * icvx[1, 1])
 
     def percentage(self):
