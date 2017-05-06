@@ -5,6 +5,7 @@ Testing module for Kruskals
 from setup_tests import Kruskals
 import numpy as np
 import pandas as pd
+import pytest
 
 def test_driver_score():
     """ Test driver_score is calculated correctly """
@@ -162,3 +163,21 @@ def test_can_handle_numpy_arrays_for_col_names():
     df.columns = ['a', 'b', 'c', 'd', 'e', 'f', 'g']
     driver_score = Kruskals.Kruskals(ndarr, exp_driver_score, i_vars=df.columns).driver_score_to_series()
     assert np.array_equal(driver_score.index.values, ['a', 'b', 'c', 'd', 'e', 'f', 'g'])
+
+def test_return_error_if_i_vars_not_sufficient():
+    """ Test that error raised when columns insufficient length """
+    ndarr = np.array([
+      [1, 2, 3, 4, 5, 6, 1],
+      [6, 5, 4, 3, 8, 1, 2],
+      [1, 1, 9, 1, 1, 1, 3],
+      [9, 2, 2, 2, 2, 2, 4],
+      [3, 3, 3, 9, 3, 3, 5],
+      [1, 2, 2, 9, 1, 4, 6]
+    ])
+
+    exp_driver_score = np.array([0.14721, 0.44398, 0.23979, 0.62493, 0.71898, 0.31662])
+    i_vars = ['a', 'b', 'c', 'd', 'e', 'f']
+    try:
+        Kruskals.Kruskals(ndarr, exp_driver_score, i_vars=i_vars).driver_score_to_series()
+    except ValueError as e:
+        assert e.message == "members labels: {}, not sufficient for ndarray of shape {}".format(i_vars, ndarr.shape)
