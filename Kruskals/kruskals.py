@@ -21,7 +21,7 @@ class Kruskals(object):
         self._driver_score = None
         self._i_vars = i_vars
 
-        if i_vars and len(i_vars) != ndarr.shape[1]:
+        if i_vars is not None and len(i_vars) != ndarr.shape[1]:
             self._i_vars = None
 
     @staticmethod

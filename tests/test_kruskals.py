@@ -144,3 +144,21 @@ def test_ability_to_handle_all_same_type():
 
     assert series[1] == 0.0
     assert series[4] == 0.0
+
+def test_can_handle_numpy_arrays_for_col_names():
+    """ Test that df.columns can be passed into __init__ """
+    ndarr = np.array([
+      [1, 2, 3, 4, 5, 6, 1],
+      [6, 5, 4, 3, 8, 1, 2],
+      [1, 1, 9, 1, 1, 1, 3],
+      [9, 2, 2, 2, 2, 2, 4],
+      [3, 3, 3, 9, 3, 3, 5],
+      [1, 2, 2, 9, 1, 4, 6]
+    ])
+
+    exp_driver_score = np.array([0.14721, 0.44398, 0.23979, 0.62493, 0.71898, 0.31662])
+
+    df = pd.DataFrame(ndarr)
+    df.columns = ['a', 'b', 'c', 'd', 'e', 'f', 'g']
+    driver_score = Kruskals.Kruskals(ndarr, exp_driver_score, i_vars=df.columns).driver_score_to_series()
+    assert np.array_equal(driver_score.index.values, ['a', 'b', 'c', 'd', 'e', 'f', 'g'])
