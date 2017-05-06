@@ -195,7 +195,7 @@ def test_percentage_when_non_directional():
       [1, 2, 2, 9, 1, 4]
     ])
     arr = np.array([1, 2, 3, 4, 5, 6, 7, 8])
-    percentage = Kruskals.Kruskals(ndarr, arr).percentage()
+    percentage = Kruskals.Kruskals(ndarr, arr).driver_score(percentage=True)
     assert (np.round(percentage, decimals=4) == [18.7523, 13.8413, 15.4078, 21.5111, 23.4954, 6.9921]).all()
 
 def test_percentage_when_directional():
@@ -211,5 +211,5 @@ def test_percentage_when_directional():
       [1, 2, 2, 9, 1, 4]
     ])
     arr = np.array([1, 2, 3, 4, 5, 6, 7, 8])
-    percentage = Kruskals.Kruskals(ndarr, arr).percentage(True)
+    percentage = Kruskals.Kruskals(ndarr, arr).driver_score(directional=True, percentage=True)
     assert (np.round(percentage, decimals=4) == [-18.7523, -13.8413, -15.4078, 21.5111, -23.4954, 6.9921]).all()

@@ -2,6 +2,7 @@ import numpy as np
 import pandas as pd
 from scipy.special import factorial
 from itertools import combinations, chain
+from warnings import warn
 
 class Kruskals(object):
     """
@@ -45,17 +46,17 @@ class Kruskals(object):
         dep_values = df[d_var].values
         return Kruskals(ind_values, dep_values, i_vars)
 
-    def driver_score_to_series(self, directional=False):
+    def driver_score_to_series(self, directional=False, percentage=False):
         """
         Returns the driver score for each variable in the independent set
         as a pandas series
         """
-        series = pd.Series(self.driver_score(directional), index=self._i_vars)
+        series = pd.Series(self.driver_score(directional, percentage), index=self._i_vars)
         series.name = 'score'
         series.index.name = 'driver'
         return series
 
-    def driver_score(self, directional=False):
+    def driver_score(self, directional=False, percentage=False):
         """
         Calculate the driver score for all independent variables
         """
@@ -65,16 +66,18 @@ class Kruskals(object):
             fact = factorial(ind_c - 1) / (2 * factorial(ind_c - 3))
             pijm_row_mean = np.nanmean(pijm, axis=(0, 2)) * fact
             self._driver_score = (pij_row_mean + pijm_row_mean) / ((ind_c - 1) + fact)
-            if directional:
-                self._driver_score = self._driver_score * np.apply_along_axis(self.correlation_coef, 0, self._ndarr, self._arr)
             self._driver_score = np.nan_to_num(self._driver_score)
-        return self._driver_score
+        if directional:
+            self._driver_score = self._driver_score * np.apply_along_axis(self.correlation_coef, 0, self._ndarr, self._arr)
+        if percentage:
+            return self._driver_score / np.fabs(self._driver_score).sum() * 100
+        else:
+            return self._driver_score
 
     def percentage(self, directional=False):
-        """
-        Distance as a relative percentage
-        """
-        return self.driver_score(directional) / self.driver_score(directional).sum() * 100
+        """ Distance as a relative percentage """
+        warn("percentage() has been deprecated, please use driver_score(percentage=True)")
+        return self.driver_score(directional) / np.fabs(self.driver_score(directional)).sum() * 100
 
     def generate_diff(self, ndarr, arr):
         """
@@ -97,12 +100,6 @@ class Kruskals(object):
         """
         icvx = np.linalg.pinv(np.cov(ndarr))
         return (icvx[0, 1] * icvx[0, 1]) / (icvx[0, 0] * icvx[1, 1])
-
-    def percentage(self):
-        """
-        Internal method to calculate relative affect on the dependent variable
-        """
-        return self.driver_score() / self.driver_score().sum() * 100
 
     @staticmethod
     def correlation_coef(ind, dep):
