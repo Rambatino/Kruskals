@@ -180,4 +180,4 @@ def test_return_error_if_i_vars_not_sufficient():
 
     with pytest.raises(ValueError) as e:
         Kruskals.Kruskals(ndarr, exp_driver_score, i_vars=i_vars).driver_score_to_series()
-    assert 'members labels: {}, not sufficient for ndarray of shape {}'.format(i_vars, ndarr.shape) in e.value
+    assert 'driver labels: {}, not sufficient for ndarray of shape {}'.format(i_vars, ndarr.shape) in e.value
