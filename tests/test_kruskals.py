@@ -177,7 +177,7 @@ def test_return_error_if_i_vars_not_sufficient():
 
     exp_driver_score = np.array([0.14721, 0.44398, 0.23979, 0.62493, 0.71898, 0.31662])
     i_vars = ['a', 'b', 'c', 'd', 'e', 'f']
-    try:
+
+    with pytest.raises(ValueError) as e:
         Kruskals.Kruskals(ndarr, exp_driver_score, i_vars=i_vars).driver_score_to_series()
-    except ValueError as e:
-        assert e.message == "members labels: {}, not sufficient for ndarray of shape {}".format(i_vars, ndarr.shape)
+    assert 'members labels: {}, not sufficient for ndarray of shape {}'.format(i_vars, ndarr.shape) in e.value
