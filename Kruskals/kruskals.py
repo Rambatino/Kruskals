@@ -21,8 +21,8 @@ class Kruskals(object):
         self._driver_score = None
         self._i_vars = i_vars
 
-        if i_vars and len(i_vars) != ndarr.shape[1]:
-            self._i_vars = None
+        if i_vars is not None and len(i_vars) != ndarr.shape[1]:
+            raise ValueError("driver labels: {}, not sufficient for ndarray of shape {}".format(i_vars, ndarr.shape))
 
     @staticmethod
     def from_pandas_df(df, i_vars, d_var):
