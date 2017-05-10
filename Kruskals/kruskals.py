@@ -67,12 +67,13 @@ class Kruskals(object):
             pijm_row_mean = np.nanmean(pijm, axis=(0, 2)) * fact
             self._driver_score = (pij_row_mean + pijm_row_mean) / ((ind_c - 1) + fact)
             self._driver_score = np.nan_to_num(self._driver_score)
+        driver_score = self._driver_score
         if directional:
-            self._driver_score = self._driver_score * np.apply_along_axis(self.correlation_coef, 0, self._ndarr, self._arr)
+            driver_score = driver_score * np.apply_along_axis(self.correlation_coef, 0, self._ndarr, self._arr)
         if percentage:
-            return self._driver_score / np.fabs(self._driver_score).sum() * 100
+            return driver_score / np.fabs(driver_score).sum() * 100
         else:
-            return self._driver_score
+            return driver_score
 
     def percentage(self, directional=False):
         """ Distance as a relative percentage """
