@@ -1,8 +1,7 @@
 # Change Log
 
-## [Unreleased](https://github.com/Rambatino/Kruskals/tree/HEAD)
-
-[Full Changelog](https://github.com/Rambatino/Kruskals/compare/v1.0.0...HEAD)
+## [v1.2.0](https://github.com/Rambatino/Kruskals/tree/v1.2.0) (2017-05-10)
+[Full Changelog](https://github.com/Rambatino/Kruskals/compare/v1.0.0...v1.2.0)
 
 **Implemented enhancements:**
 
@@ -10,7 +9,13 @@
 
 **Fixed bugs:**
 
+- Fixed i\_vars truthy check when numpy array passed [\#9](https://github.com/Rambatino/Kruskals/pull/9) ([Rambatino](https://github.com/Rambatino))
+- Fixed percentage calculation [\#8](https://github.com/Rambatino/Kruskals/pull/8) ([Rambatino](https://github.com/Rambatino))
 - Switched inverse function to run pseudo-inverse, to account for correlated and 0 variance variables [\#5](https://github.com/Rambatino/Kruskals/pull/5) ([Rambatino](https://github.com/Rambatino))
+
+**Closed issues:**
+
+- The truth value of a Index is ambiguous [\#6](https://github.com/Rambatino/Kruskals/issues/6)
 
 ## [v1.0.0](https://github.com/Rambatino/Kruskals/tree/v1.0.0) (2017-04-05)
 [Full Changelog](https://github.com/Rambatino/Kruskals/compare/v0.0.1...v1.0.0)
