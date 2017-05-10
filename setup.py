@@ -57,6 +57,6 @@ setup(
     install_requires=['numpy', 'scipy', 'pandas', 'pytest'],
     extras_require={
         'dev': ['check-manifest'],
-        'test': ['coverage', 'pytest-cov'],
+        'test': ['codecov', 'pytest-cov'],
     }
 )

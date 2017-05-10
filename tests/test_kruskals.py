@@ -180,4 +180,36 @@ def test_return_error_if_i_vars_not_sufficient():
 
     with pytest.raises(ValueError) as e:
         Kruskals.Kruskals(ndarr, exp_driver_score, i_vars=i_vars).driver_score_to_series()
-    assert 'driver labels: {}, not sufficient for ndarray of shape {}'.format(i_vars, ndarr.shape) in e.value
+    assert 'driver labels: {}, not sufficient for ndarray of shape {}'.format(i_vars, ndarr.shape) in str(e.value)
+
+def test_percentage_when_non_directional():
+    """ Test the percentage function behaves as expected """
+    ndarr = np.array([
+      [10, 2, 3, 4, 5, 6],
+      [6, 5, 4, 3, 8, 1],
+      [1, 1, 9, 1, 1, 1],
+      [9, 2, 2, 2, 2, 2],
+      [3, 3, 3, 9, 3, 3],
+      [1, 2, 2, 9, 1, 4],
+      [1, 2, 2, 9, 1, 4],
+      [1, 2, 2, 9, 1, 4]
+    ])
+    arr = np.array([1, 2, 3, 4, 5, 6, 7, 8])
+    percentage = Kruskals.Kruskals(ndarr, arr).driver_score(percentage=True)
+    assert (np.round(percentage, decimals=4) == [18.7523, 13.8413, 15.4078, 21.5111, 23.4954, 6.9921]).all()
+
+def test_percentage_when_directional():
+    """ Test the percentage function behaves as expected """
+    ndarr = np.array([
+      [10, 2, 3, 4, 5, 6],
+      [6, 5, 4, 3, 8, 1],
+      [1, 1, 9, 1, 1, 1],
+      [9, 2, 2, 2, 2, 2],
+      [3, 3, 3, 9, 3, 3],
+      [1, 2, 2, 9, 1, 4],
+      [1, 2, 2, 9, 1, 4],
+      [1, 2, 2, 9, 1, 4]
+    ])
+    arr = np.array([1, 2, 3, 4, 5, 6, 7, 8])
+    percentage = Kruskals.Kruskals(ndarr, arr).driver_score(directional=True, percentage=True)
+    assert (np.round(percentage, decimals=4) == [-18.7523, -13.8413, -15.4078, 21.5111, -23.4954, 6.9921]).all()
