@@ -1,7 +1,7 @@
 <img src="https://img.shields.io/pypi/v/Kruskals.svg"> <img src="https://img.shields.io/pypi/pyversions/pytest.svg"> <img src="https://circleci.com/gh/Rambatino/Kruskals.png?style=shield&circle-token=031aab51ad1dea4a698d02f02288887f06c1a9ef"><a href="https://www.quantifiedcode.com/app/project/664c0a32a4b745a8b3728c4a3033e055"><img src="https://www.quantifiedcode.com/api/v1/project/664c0a32a4b745a8b3728c4a3033e055/badge.svg" alt="Code issues"/></a> <a href="https://codecov.io/gh/Rambatino/Kruskals"><img src="https://codecov.io/gh/Rambatino/Kruskals/branch/master/graph/badge.svg" alt="Codecov" /></a>
 
 
-(Kruskal's Relative Importance / Driver Analysis)[http://amstat.tandfonline.com/doi/abs/10.1080/00031305.1987.10475432] (Not to be confused with Joseph's Distance Measure algorithm)
+[Kruskal's Relative Importance / Driver Analysis](http://amstat.tandfonline.com/doi/abs/10.1080/00031305.1987.10475432) (Not to be confused with Joseph's Distance Measure algorithm)
 =========================================
 
 This package provides a python implementation of [Kruskal's Algorithm](https://en.wikipedia.org/wiki/Kruskal%27s_algorithm)
@@ -9,7 +9,7 @@ This package provides a python implementation of [Kruskal's Algorithm](https://e
 Caveats
 ------------
 
-To calculate the inverse it uses the (Moore–Penrose pseudoinverse)[https://en.wikipedia.org/wiki/Moore%E2%80%93Penrose_pseudoinverse] which permits highly correlated independent variables to be passed as well as variables that have zero variance. It is up to the user of this library to ensure they are comfortable with this. N.B. if the normal matrix inversion would work, that is used, the psuedoinverse is only applied if the former fails.
+To calculate the inverse it uses the [Moore–Penrose pseudoinverse](https://en.wikipedia.org/wiki/Moore%E2%80%93Penrose_pseudoinverse) which permits highly correlated independent variables to be passed as well as variables that have zero variance. It is up to the user of this library to ensure they are comfortable with this. N.B. if the normal matrix inversion would work, that is used, the psuedoinverse is only applied if the former fails.
 
 Installation
 ------------
