@@ -61,11 +61,11 @@ class Kruskals(object):
         Calculate the driver score for all independent variables
         """
         if self._driver_score is None:
-            ind_c, pij, pijm = self.generate_diff(self._ndarr, self._arr)
-            pij_row_mean = np.nanmean(pij, axis=1) * (ind_c - 1)
+            ind_c, m_ij, m_ijm = self.generate_diff(self._ndarr, self._arr)
+            m_ij_row_mean = np.nanmean(m_ij, axis=1) * (ind_c - 1)
             fact = factorial(ind_c - 1) / (2 * factorial(ind_c - 3))
-            pijm_row_mean = np.nanmean(pijm, axis=(0, 2)) * fact
-            self._driver_score = (pij_row_mean + pijm_row_mean) / ((ind_c - 1) + fact)
+            m_ijm_row_mean = np.nanmean(m_ijm, axis=(0, 2)) * fact
+            self._driver_score = (m_ij_row_mean + m_ijm_row_mean) / ((ind_c - 1) + fact)
             self._driver_score = np.nan_to_num(self._driver_score)
         driver_score = self._driver_score
         if directional:
@@ -86,13 +86,13 @@ class Kruskals(object):
         the independent and the dependent variables
         """
         l = ndarr.shape[1]
-        pij = np.empty((l,l,)) * np.nan
-        pijm = np.empty((l,l,l)) * np.nan
+        m_ij = np.empty((l,l,)) * np.nan
+        m_ijm = np.empty((l,l,l)) * np.nan
         for i, j in chain.from_iterable(((x, y), (y, x)) for x, y in combinations(range(l), 2)):
-            pij[i, j] = self.pcor_squared(np.array([ndarr[:,i], arr, ndarr[:,j]]))
+            m_ij[i, j] = self.pcor_squared(np.array([ndarr[:,i], arr, ndarr[:,j]]))
             for m in (x for x in range(j+1, l) if x != i):
-                pijm[m, i, j] = self.pcor_squared(np.array([ndarr[:,i], arr, ndarr[:,j], ndarr[:, m]]))
-        return (l, pij, pijm)
+                m_ijm[m, i, j] = self.pcor_squared(np.array([ndarr[:,i], arr, ndarr[:,j], ndarr[:, m]]))
+        return (l, m_ij, m_ijm)
 
     @staticmethod
     def pcor_squared(ndarr):
