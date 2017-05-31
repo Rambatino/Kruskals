@@ -17,10 +17,13 @@ class Kruskals(object):
             1-dimensional array of the dependent variable associated with ndarr
     """
     def __init__(self, ndarr, arr, i_vars=None):
-        self._ndarr = ndarr
-        self._arr = arr
+        self._arr = arr[~np.isnan(arr)]
+        self._ndarr = ndarr[~np.isnan(arr)]
         self._driver_score = None
         self._i_vars = i_vars
+
+        if self._arr.shape[0] < arr.shape[0]:
+            warn("NaN values have been removed from the dependent variable")
 
         if i_vars is not None and len(i_vars) != ndarr.shape[1]:
             raise ValueError("driver labels: {}, not sufficient for ndarray of shape {}".format(i_vars, ndarr.shape))

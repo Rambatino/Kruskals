@@ -213,3 +213,18 @@ def test_percentage_when_directional():
     arr = np.array([1, 2, 3, 4, 5, 6, 7, 8])
     percentage = Kruskals.Kruskals(ndarr, arr).driver_score(directional=True, percentage=True)
     assert (np.round(percentage, decimals=4) == [-18.7523, -13.8413, -15.4078, 21.5111, -23.4954, 6.9921]).all()
+
+def test_dependent_variable_can_be_nan():
+    ndarr = np.array([
+      [10, 2, 3, 4, 5, 6],
+      [6, 5, 4, 3, 8, 1],
+      [1, 1, 9, 1, 1, 1],
+      [9, 2, 2, 2, 2, 2],
+      [3, 3, 3, 9, 3, 3],
+      [1, 2, 2, 9, 1, 4],
+      [1, 2, 2, 9, 1, 4],
+      [1, 2, 2, 9, 1, 4]
+    ])
+    arr = np.array([1, 2, 3, 4, np.nan, 6, 7, 8])
+    percentage = Kruskals.Kruskals(ndarr, arr).driver_score(directional=True, percentage=True)
+    assert (np.round(percentage, decimals=4) == [-17.2805, -13.5913, -14.5028, 23.0658, -22.5377, 9.0218]).all()
