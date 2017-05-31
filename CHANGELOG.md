@@ -1,5 +1,17 @@
 # Change Log
 
+## [Unreleased](https://github.com/Rambatino/Kruskals/tree/HEAD)
+
+[Full Changelog](https://github.com/Rambatino/Kruskals/compare/v1.2.0...HEAD)
+
+**Fixed bugs:**
+
+- Fixed issue where the dependent variable was NaN [\#11](https://github.com/Rambatino/Kruskals/pull/11) ([Rambatino](https://github.com/Rambatino))
+
+**Closed issues:**
+
+- Percentage needs abs\(\) [\#7](https://github.com/Rambatino/Kruskals/issues/7)
+
 ## [v1.2.0](https://github.com/Rambatino/Kruskals/tree/v1.2.0) (2017-05-10)
 [Full Changelog](https://github.com/Rambatino/Kruskals/compare/v1.0.0...v1.2.0)
 
