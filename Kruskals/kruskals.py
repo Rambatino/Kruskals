@@ -6,7 +6,7 @@ from warnings import warn
 
 class Kruskals(object):
     """
-    Class to run Josef Kruskal's algorithm
+    Class to run William Kruskal's algorithm
     Parameters
         ----------
         ndarr : numpy.ndarray (dtype: float/int)
