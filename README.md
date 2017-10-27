@@ -4,7 +4,7 @@
 [Kruskal's Relative Importance / Driver Analysis](http://amstat.tandfonline.com/doi/abs/10.1080/00031305.1987.10475432) (Not to be confused with Joseph's Distance Measure algorithm)
 =========================================
 
-This package provides a python implementation of [Kruskal's Algorithm](https://en.wikipedia.org/wiki/Kruskal%27s_algorithm)
+This package provides a python implementation of [Kruskal's Algorithm](http://amstat.tandfonline.com/doi/abs/10.1080/00031305.1987.10475432)
 
 Caveats
 ------------
