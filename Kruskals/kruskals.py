@@ -93,7 +93,7 @@ class Kruskals(object):
             np.cov(np.array([ndarr[:,j], arr, ndarr[:,i]]))
             for j, i in permutations(range(l), 2)
         )
-        pinv_ij = np.linalg.pinv(cov_ij)
+        pinv_ij = np.linalg.pinv(cov_ij, hermitian=True)
         pcor_ij = ((pinv_ij[:, 0, 1] * pinv_ij[:, 0, 1]) / (pinv_ij[:, 0, 0] * pinv_ij[:, 1, 1]))
 
         m_ijm = np.empty((l,l,l)) * np.nan
@@ -103,7 +103,7 @@ class Kruskals(object):
             for i, j in permutations(range(l), 2)
             for m in range(j+1, l) if m != i
         ]
-        pinv_mij = np.linalg.pinv(cov_mij)
+        pinv_mij = np.linalg.pinv(cov_mij, hermitian=True)
         pcor_mij = ((pinv_mij[:, 0, 1] * pinv_mij[:, 0, 1]) / (pinv_mij[:, 0, 0] * pinv_mij[:, 1, 1]))
 
         return (l, pcor_ij.reshape(-1, l-1), pcor_mij.reshape(l, -1))
