@@ -1,7 +1,7 @@
 import numpy as np
 import pandas as pd
 from scipy.special import factorial
-from itertools import combinations, chain
+from itertools import combinations, permutations, chain
 from warnings import warn
 
 class Kruskals(object):
@@ -67,7 +67,7 @@ class Kruskals(object):
             ind_c, m_ij, m_ijm = self.generate_diff(self._ndarr, self._arr)
             m_ij_row_mean = np.nanmean(m_ij, axis=1) * (ind_c - 1)
             fact = factorial(ind_c - 1) / (2 * factorial(ind_c - 3))
-            m_ijm_row_mean = np.nanmean(m_ijm, axis=(0, 2)) * fact
+            m_ijm_row_mean = np.nanmean(m_ijm, axis=1) * fact
             self._driver_score = (m_ij_row_mean + m_ijm_row_mean) / ((ind_c - 1) + fact)
             self._driver_score = np.nan_to_num(self._driver_score)
         driver_score = self._driver_score
@@ -89,21 +89,24 @@ class Kruskals(object):
         the independent and the dependent variables
         """
         l = ndarr.shape[1]
-        m_ij = np.empty((l,l,)) * np.nan
-        m_ijm = np.empty((l,l,l)) * np.nan
-        for i, j in chain.from_iterable(((x, y), (y, x)) for x, y in combinations(range(l), 2)):
-            m_ij[i, j] = self.pcor_squared(np.array([ndarr[:,i], arr, ndarr[:,j]]))
-            for m in (x for x in range(j+1, l) if x != i):
-                m_ijm[m, i, j] = self.pcor_squared(np.array([ndarr[:,i], arr, ndarr[:,j], ndarr[:, m]]))
-        return (l, m_ij, m_ijm)
+        cov_ij = tuple(
+            np.cov(np.array([ndarr[:,j], arr, ndarr[:,i]]))
+            for j, i in permutations(range(l), 2)
+        )
+        pinv_ij = np.linalg.pinv(cov_ij, hermitian=True)
+        pcor_ij = ((pinv_ij[:, 0, 1] * pinv_ij[:, 0, 1]) / (pinv_ij[:, 0, 0] * pinv_ij[:, 1, 1]))
 
-    @staticmethod
-    def pcor_squared(ndarr):
-        """
-        Internal method to calculate the partial correlation squared
-        """
-        icvx = np.linalg.pinv(np.cov(ndarr))
-        return (icvx[0, 1] * icvx[0, 1]) / (icvx[0, 0] * icvx[1, 1])
+        m_ijm = np.empty((l,l,l)) * np.nan
+
+        cov_mij = [
+            np.cov(np.array([ndarr[:,i], arr, ndarr[:,j], ndarr[:, m]]))
+            for i, j in permutations(range(l), 2)
+            for m in range(j+1, l) if m != i
+        ]
+        pinv_mij = np.linalg.pinv(cov_mij, hermitian=True)
+        pcor_mij = ((pinv_mij[:, 0, 1] * pinv_mij[:, 0, 1]) / (pinv_mij[:, 0, 0] * pinv_mij[:, 1, 1]))
+
+        return (l, pcor_ij.reshape(-1, l-1), pcor_mij.reshape(l, -1))
 
     @staticmethod
     def correlation_coef(ind, dep):
