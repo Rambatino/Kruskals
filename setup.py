@@ -54,7 +54,7 @@ setup(
     ],
     keywords='Kruskals pandas numpy scipy statistics statistical analysis',
     packages=find_packages(exclude=['contrib', 'docs', 'tests']),
-    install_requires=['numpy>1.14', 'scipy', 'pandas'],
+    install_requires=['numpy>1.17', 'scipy', 'pandas'],
     extras_require={
         'dev': ['check-manifest'],
         'test': ['codecov', 'pytest', 'pytest-cov'],
