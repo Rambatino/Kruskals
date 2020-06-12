@@ -1,0 +1,38 @@
+---
+version: 2.1
+references:
+  test_steps: &test_steps
+    steps:
+      - checkout
+      - run:
+          name: Install Kruskals
+          command: pip install .[test]
+      - run:
+          name: Pytest
+          command: pytest
+jobs:
+  test34:
+    <<: *test_steps
+    docker:
+      - image: python:3.4
+  test35:
+    <<: *test_steps
+    docker:
+      - image: python:3.5
+  test36:
+    <<: *test_steps
+    docker:
+      - image: python:3.6
+  test37:
+    <<: *test_steps
+    docker:
+      - image: python:3.7
+
+workflows:
+  version: 2
+  test:
+    jobs:
+      - test34
+      - test35
+      - test36
+      - test37
