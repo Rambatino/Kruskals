@@ -228,3 +228,37 @@ def test_dependent_variable_can_be_nan():
     arr = np.array([1, 2, 3, 4, np.nan, 6, 7, 8])
     percentage = Kruskals.Kruskals(ndarr, arr).driver_score(directional=True, percentage=True)
     assert (np.round(percentage, decimals=4) == [-17.2805, -13.5913, -14.5028, 23.0658, -22.5377, 9.0218]).all()
+
+
+def test_independent_1_col():
+    ndarr = np.array([
+      [10],
+      [6],
+      [1],
+      [9],
+      [3],
+      [1],
+      [1],
+      [1],
+    ])
+    arr = np.array([1, 2, 3, 4, 5, 6, 7, 8])
+    percentage = Kruskals.Kruskals(ndarr, arr).driver_score(directional=True, percentage=True)
+
+    assert (np.isnan(np.round(percentage, decimals=4))).all()
+
+
+def test_independent_2_col():
+    ndarr = np.array([
+      [10, 2],
+      [6, 5],
+      [1, 1],
+      [9, 2],
+      [3, 3],
+      [1, 2],
+      [1, 2],
+      [1, 2]
+    ])
+    arr = np.array([1, 2, 3, 4, 5, 6, 7, 8])
+    percentage = Kruskals.Kruskals(ndarr, arr).driver_score(directional=True, percentage=True)
+
+    assert (np.isnan(np.round(percentage, decimals=4))).all()
